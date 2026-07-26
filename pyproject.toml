@@ -1,0 +1,52 @@
+[build-system]
+requires = ["setuptools>=68"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "waterfall"
+version = "0.1.0"
+description = "Dial in a sound, see what color it is, rendered as a waterfall."
+requires-python = ">=3.11"
+dependencies = [
+    "numpy>=1.26",
+    "fastapi>=0.110",
+    "uvicorn>=0.29",
+    # Not optional: uvicorn serves no WebSockets without a protocol library, and
+    # FastAPI's TestClient uses an in-process transport that needs none -- so the
+    # integration tests pass green while the real server cannot upgrade a single
+    # connection. Only running the app catches it.
+    "websockets>=12",
+    "pydantic>=2.6",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8.0",
+    "pytest-asyncio>=0.23",
+    "httpx>=0.27",
+    "mypy>=1.9",
+    "scipy>=1.12",
+    "colour-science>=0.4",
+    # scripts/measure_region.py reads the annotated photo and builds the mask.
+    "Pillow>=10.0",
+]
+
+[tool.setuptools.packages.find]
+where = ["src"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+pythonpath = ["src"]
+addopts = "-q"
+
+[tool.mypy]
+python_version = "3.11"
+mypy_path = "src"
+
+# The domain layer is the only place the science lives, so it gets the strictest
+# treatment. Invariant 5: every domain function is pure and fully typed.
+[[tool.mypy.overrides]]
+module = "waterfall.domain.*"
+strict = true
+disallow_untyped_defs = true
+warn_return_any = true

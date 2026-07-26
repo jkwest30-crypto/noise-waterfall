@@ -1,0 +1,14 @@
+{
+  "version": "0.0.1",
+  "configurations": [
+    {
+      "name": "waterfall",
+      "runtimeExecutable": "/bin/bash",
+      "runtimeArgs": [
+        "-c",
+        "cd /Users/jacobwest/Documents/Apps/waterfall_visualization_app; export NVM_DIR=\"$HOME/.nvm\"; [ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"; nvm use 20 >/dev/null 2>&1; .venv/bin/python -m uvicorn waterfall.api.app:app --port 8317 --log-level warning & ENGINE=$!; trap 'kill $ENGINE 2>/dev/null' EXIT INT TERM; npx vite --port 5373 --strictPort"
+      ],
+      "port": 5373
+    }
+  ]
+}
