@@ -1,0 +1,6 @@
+{
+  "permissions": {
+    "bash": ["npm", "python", "git"],
+    "read": ["allow"]
+  }
+}
